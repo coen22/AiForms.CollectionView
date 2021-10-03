@@ -13,7 +13,7 @@ using System.Linq;
 namespace AiForms.Renderers.iOS
 {
     [Foundation.Preserve(AllMembers = true)]
-    public class CollectionViewRenderer : ViewRenderer<CollectionView, UICollectionView>
+    public class CollectionViewRenderer : ViewRenderer<AiCollectionView, UICollectionView>
     {
         public const string SectionHeaderId = "SectionHeader";
         protected CollectionViewSource DataSource;
@@ -21,7 +21,7 @@ namespace AiForms.Renderers.iOS
         protected ITemplatedItemsView<Cell> TemplatedItemsView => Element;
         bool _disposed;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             base.OnElementChanged(e);
 

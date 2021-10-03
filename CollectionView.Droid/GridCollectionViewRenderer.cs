@@ -10,7 +10,7 @@ using AndroidX.SwipeRefreshLayout.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(GridCollectionView), typeof(GridCollectionViewRenderer))]
+[assembly: ExportRenderer(typeof(GridAiCollectionView), typeof(GridCollectionViewRenderer))]
 namespace AiForms.Renderers.Droid
 {
     [Android.Runtime.Preserve(AllMembers = true)]
@@ -28,8 +28,8 @@ namespace AiForms.Renderers.Droid
         CollectionViewSpanSizeLookup _spanSizeLookup;
         GridCollectionItemDecoration _itemDecoration;
         IListViewController Controller => Element;
-        GridCollectionView _gridCollectionView => (GridCollectionView)Element;
-        bool _isRatioHeight => _gridCollectionView.ColumnHeight <= 5.0;
+        GridAiCollectionView GridAiCollectionView => (GridAiCollectionView)Element;
+        bool _isRatioHeight => GridAiCollectionView.ColumnHeight <= 5.0;
         bool _disposed;
 
         public GridCollectionViewRenderer(Context context) : base(context)
@@ -64,7 +64,7 @@ namespace AiForms.Renderers.Droid
             base.Dispose(disposing);
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             if (e.NewElement != null)
             {
@@ -90,7 +90,7 @@ namespace AiForms.Renderers.Droid
                 _itemDecoration = new GridCollectionItemDecoration(this);
                 RecyclerView.AddItemDecoration(_itemDecoration);
 
-                Adapter = new CollectionViewAdapter(Context, _gridCollectionView, RecyclerView, this);
+                Adapter = new CollectionViewAdapter(Context, GridAiCollectionView, RecyclerView, this);
 
                 RecyclerView.SetAdapter(Adapter);
                 RecyclerView.SetLayoutManager(_gridLayoutManager);
@@ -118,23 +118,23 @@ namespace AiForms.Renderers.Droid
             {
                 RefreshAll();
             }
-            else if (e.PropertyName == GridCollectionView.GroupHeaderHeightProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.GroupHeaderHeightProperty.PropertyName)
             {
                 UpdateGroupHeaderHeight();
                 RefreshAll();
             }
-            else if (e.PropertyName == GridCollectionView.GridTypeProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.PortraitColumnsProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.LandscapeColumnsProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.ColumnSpacingProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.RowSpacingProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.ColumnHeightProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.ColumnWidthProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.SpacingTypeProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.AdditionalHeightProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupFirstSpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupLastSpacingProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.BothSidesMarginProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.GridTypeProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.PortraitColumnsProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.LandscapeColumnsProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.ColumnSpacingProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.RowSpacingProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.ColumnHeightProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.ColumnWidthProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.SpacingTypeProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.AdditionalHeightProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupFirstSpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupLastSpacingProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.BothSidesMarginProperty.PropertyName)
             {
                 UpdateGridType();
                 RefreshAll();
@@ -143,7 +143,7 @@ namespace AiForms.Renderers.Droid
             {
                 UpdatePullToRefreshEnabled();
             }
-            else if (e.PropertyName == GridCollectionView.PullToRefreshColorProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.PullToRefreshColorProperty.PropertyName)
             {
                 UpdatePullToRefreshColor();
             }
@@ -209,9 +209,9 @@ namespace AiForms.Renderers.Droid
 
         protected virtual void UpdatePullToRefreshColor()
         {
-            if (!_gridCollectionView.PullToRefreshColor.IsDefault)
+            if (!GridAiCollectionView.PullToRefreshColor.IsDefault)
             {
-                var color = _gridCollectionView.PullToRefreshColor.ToAndroid();
+                var color = GridAiCollectionView.PullToRefreshColor.ToAndroid();
                 _refresh.SetColorSchemeColors(color, color, color, color);
             }
         }
@@ -242,9 +242,9 @@ namespace AiForms.Renderers.Droid
 
         protected virtual void UpdateGroupHeaderHeight()
         {
-            if (_gridCollectionView.IsGroupingEnabled)
+            if (GridAiCollectionView.IsGroupingEnabled)
             {
-                GroupHeaderHeight = (int)Context.ToPixels(_gridCollectionView.GroupHeaderHeight);
+                GroupHeaderHeight = (int)Context.ToPixels(GridAiCollectionView.GroupHeaderHeight);
             }
         }
 
@@ -256,13 +256,13 @@ namespace AiForms.Renderers.Droid
                 return;
             }
             RecyclerView.SetPadding(0, 0, 0, 0);
-            RowSpacing = (int)Context.ToPixels(_gridCollectionView.RowSpacing);
+            RowSpacing = (int)Context.ToPixels(GridAiCollectionView.RowSpacing);
 
-            _firstSpacing = (int)Context.ToPixels(_gridCollectionView.GroupFirstSpacing);
-            _lastSpacing = (int)Context.ToPixels(_gridCollectionView.GroupLastSpacing);
+            _firstSpacing = (int)Context.ToPixels(GridAiCollectionView.GroupFirstSpacing);
+            _lastSpacing = (int)Context.ToPixels(GridAiCollectionView.GroupLastSpacing);
 
             int spanCount = 0;
-            if (_gridCollectionView.GridType == GridType.UniformGrid)
+            if (GridAiCollectionView.GridType == GridType.UniformGrid)
             {
                 var orientation = Context.Resources.Configuration.Orientation;
                 switch (orientation)
@@ -270,14 +270,14 @@ namespace AiForms.Renderers.Droid
                     case Orientation.Portrait:
                     case Orientation.Square:
                     case Orientation.Undefined:
-                        spanCount = _gridCollectionView.PortraitColumns;
+                        spanCount = GridAiCollectionView.PortraitColumns;
                         break;
                     case Orientation.Landscape:
-                        spanCount = _gridCollectionView.LandscapeColumns;
+                        spanCount = GridAiCollectionView.LandscapeColumns;
                         break;
                 }
-                _bothSidesMargin = (int)Context.ToPixels(_gridCollectionView.BothSidesMargin);
-                ColumnSpacing = (int)(Context.ToPixels(_gridCollectionView.ColumnSpacing));
+                _bothSidesMargin = (int)Context.ToPixels(GridAiCollectionView.BothSidesMargin);
+                ColumnSpacing = (int)(Context.ToPixels(GridAiCollectionView.ColumnSpacing));
                 CellHeight = GetUniformItemHeight(containerWidth, spanCount);
                 System.Diagnostics.Debug.WriteLine($"Decided RowHeight {CellHeight}");
             }
@@ -295,11 +295,11 @@ namespace AiForms.Renderers.Droid
 
         protected virtual double CalcurateColumnHeight(double itemWidth)
         {
-            var height = _isRatioHeight ? itemWidth * _gridCollectionView.ColumnHeight :
-                                          Context.ToPixels(_gridCollectionView.ColumnHeight);
+            var height = _isRatioHeight ? itemWidth * GridAiCollectionView.ColumnHeight :
+                                          Context.ToPixels(GridAiCollectionView.ColumnHeight);
 
-            var actualHeight = height + Context.ToPixels(_gridCollectionView.AdditionalHeight);
-            _gridCollectionView.SetValue(GridCollectionView.ComputedHeightProperty,
+            var actualHeight = height + Context.ToPixels(GridAiCollectionView.AdditionalHeight);
+            GridAiCollectionView.SetValue(GridAiCollectionView.ComputedHeightProperty,
                                          Context.FromPixels(actualHeight));
 
             return actualHeight;
@@ -310,22 +310,22 @@ namespace AiForms.Renderers.Droid
             RecyclerView.SetPadding(_bothSidesMargin, 0, _bothSidesMargin, 0);
             float actualWidth = containerWidth - _bothSidesMargin * 2f - (float)ColumnSpacing * (float)(columns - 1.0f);
             var itemWidth = (float)(actualWidth / (float)columns);
-            _gridCollectionView.SetValue(GridCollectionView.ComputedWidthProperty, Context.FromPixels(itemWidth));
+            GridAiCollectionView.SetValue(GridAiCollectionView.ComputedWidthProperty, Context.FromPixels(itemWidth));
             return (int)CalcurateColumnHeight(itemWidth);
         }
 
         protected virtual (int spanCount, int columnSpacing, int rowHeight) GetAutoSpacingItemSize(double containerWidth)
         {
-            var columnWidth = Context.ToPixels(_gridCollectionView.ColumnWidth);
-            var columnHeight = Context.ToPixels(_gridCollectionView.ColumnHeight);
+            var columnWidth = Context.ToPixels(GridAiCollectionView.ColumnWidth);
+            var columnHeight = Context.ToPixels(GridAiCollectionView.ColumnHeight);
 
             var itemWidth = Math.Min(containerWidth, columnWidth);
             var itemHeight = CalcurateColumnHeight(itemWidth);
 
-            _gridCollectionView.SetValue(GridCollectionView.ComputedWidthProperty, Context.FromPixels(itemWidth));
+            GridAiCollectionView.SetValue(GridAiCollectionView.ComputedWidthProperty, Context.FromPixels(itemWidth));
 
             var leftSize = containerWidth;
-            var spacing = _gridCollectionView.SpacingType == SpacingType.Between ? 0 : Context.ToPixels(_gridCollectionView.ColumnSpacing);
+            var spacing = GridAiCollectionView.SpacingType == SpacingType.Between ? 0 : Context.ToPixels(GridAiCollectionView.ColumnSpacing);
             int columnCount = 0;
             do
             {
@@ -344,7 +344,7 @@ namespace AiForms.Renderers.Droid
 
             double contentWidth = 0;
             double columnSpacing = 0;
-            if (_gridCollectionView.SpacingType == SpacingType.Between)
+            if (GridAiCollectionView.SpacingType == SpacingType.Between)
             {
                 contentWidth = itemWidth * columnCount;
                 columnSpacing = (containerWidth - contentWidth) / (columnCount - 1);
@@ -363,7 +363,7 @@ namespace AiForms.Renderers.Droid
         public class CollectionViewSpanSizeLookup : GridLayoutManager.SpanSizeLookup
         {
             GridCollectionViewRenderer _parent;
-            GridCollectionView _gridCollectionView => _parent._gridCollectionView;
+            GridAiCollectionView GridAiCollectionView => _parent.GridAiCollectionView;
 
             public int SpanSize { get; set; }
             public int SpanCount { get; set; }
@@ -376,7 +376,7 @@ namespace AiForms.Renderers.Droid
 
             public override int GetSpanSize(int position)
             {
-                if (_parent._gridCollectionView.IsGroupingEnabled)
+                if (_parent.GridAiCollectionView.IsGroupingEnabled)
                 {
                     var group = _parent.TemplatedItemsView.TemplatedItems.GetGroupIndexFromGlobal(position, out var row);
                     if (row == 0)
@@ -403,7 +403,7 @@ namespace AiForms.Renderers.Droid
             public bool IncludeEdge { get; set; }
 
             GridCollectionViewRenderer _parentRenderer;
-            GridCollectionView _gridCollectionView => _parentRenderer._gridCollectionView;
+            GridAiCollectionView GridAiCollectionView => _parentRenderer.GridAiCollectionView;
             CollectionViewSpanSizeLookup _spanLookUp => _parentRenderer._spanSizeLookup;
             int _spanCount => _parentRenderer._gridLayoutManager.SpanCount;
 
@@ -429,12 +429,12 @@ namespace AiForms.Renderers.Droid
                 var position = parent.GetChildAdapterPosition(view);
 
                 // TODO: 1 column grid with grouped is not work
-                if (_gridCollectionView.IsGroupingEnabled && spanSize == _spanCount)
+                if (GridAiCollectionView.IsGroupingEnabled && spanSize == _spanCount)
                 {
                     var headparams = view.LayoutParameters as ViewGroup.MarginLayoutParams;
                     var margin = 0;
-                    if (_gridCollectionView.GridType == GridType.AutoSpacingGrid && _gridCollectionView.SpacingType == SpacingType.Center ||
-                       _gridCollectionView.GridType == GridType.UniformGrid && _gridCollectionView.BothSidesMargin > 0)
+                    if (GridAiCollectionView.GridType == GridType.AutoSpacingGrid && GridAiCollectionView.SpacingType == SpacingType.Center ||
+                       GridAiCollectionView.GridType == GridType.UniformGrid && GridAiCollectionView.BothSidesMargin > 0)
                     {
                         margin = _parentRenderer.RecyclerView.PaddingLeft * -1;
                         headparams.SetMargins(margin, headparams.TopMargin, margin, headparams.BottomMargin);
@@ -454,7 +454,7 @@ namespace AiForms.Renderers.Droid
                     return;
                 }
 
-                if (_gridCollectionView.IsGroupingEnabled && _spanCount == 1)
+                if (GridAiCollectionView.IsGroupingEnabled && _spanCount == 1)
                 {
                     return;
                 }

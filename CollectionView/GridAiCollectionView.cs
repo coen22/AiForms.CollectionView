@@ -35,18 +35,18 @@ namespace AiForms.Renderers
     /// <summary>
     /// Grid collection view.
     /// </summary>
-    public class GridCollectionView : CollectionView
+    public class GridAiCollectionView : AiCollectionView
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.GridCollectionView"/> class.
         /// </summary>
         /// <param name="cachingStrategy">Caching strategy.</param>
-        public GridCollectionView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy) { }
+        public GridAiCollectionView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.GridCollectionView"/> class.
         /// </summary>
-        public GridCollectionView() : base(ListViewCachingStrategy.RecycleElement) { }
+        public GridAiCollectionView() : base(ListViewCachingStrategy.RecycleElement) { }
 
         /// <summary>
         /// The portrait columns property.
@@ -55,7 +55,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(PortraitColumns),
                 typeof(int),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 2,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -77,7 +77,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(LandscapeColumns),
                 typeof(int),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 4,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -99,7 +99,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(RowSpacing),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -121,7 +121,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ColumnSpacing),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -143,7 +143,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ColumnWidth),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 100d,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -165,7 +165,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ColumnHeight),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 1.0d,
                 defaultBindingMode: BindingMode.OneWay
         );
@@ -187,7 +187,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(AdditionalHeight),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -209,7 +209,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ComputedWidth),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWayToSource
             );
@@ -230,7 +230,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ComputedHeight),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWayToSource
             );
@@ -251,7 +251,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(GroupHeaderHeight),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 36d,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -273,7 +273,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(GridType),
                 typeof(GridType),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 GridType.AutoSpacingGrid,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -295,7 +295,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(SpacingType),
                 typeof(SpacingType),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 SpacingType.Between,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -317,7 +317,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(PullToRefreshColor),
                 typeof(Color),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(Color),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -339,7 +339,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(BothSidesMargin),
                 typeof(double),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -362,7 +362,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(IsGroupHeaderSticky),
                 typeof(bool),
-                typeof(GridCollectionView),
+                typeof(GridAiCollectionView),
                 true,
                 defaultBindingMode: BindingMode.OneWay
             );

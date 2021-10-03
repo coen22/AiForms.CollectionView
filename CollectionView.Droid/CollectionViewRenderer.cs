@@ -10,7 +10,7 @@ using AndroidX.RecyclerView.Widget;
 namespace AiForms.Renderers.Droid
 {
     [Android.Runtime.Preserve(AllMembers = true)]
-    public abstract class CollectionViewRenderer : ViewRenderer<CollectionView, AView>, ICollectionViewRenderer
+    public abstract class CollectionViewRenderer : ViewRenderer<AiCollectionView, AView>, ICollectionViewRenderer
     {
         public int GroupHeaderHeight { get; set; }
         public int GroupHeaderWidth { get; set; }
@@ -63,7 +63,7 @@ namespace AiForms.Renderers.Droid
             base.Dispose(disposing);
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             base.OnElementChanged(e);
 

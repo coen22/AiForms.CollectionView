@@ -8,15 +8,15 @@ namespace AiForms.Renderers
     /// </summary>
     public class ScrollController:IScrollController
     {
-        WeakReference<CollectionView> _refView;
+        WeakReference<AiCollectionView> _refView;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.ScrollController"/> class.
         /// </summary>
-        /// <param name="collectionView">Collection view.</param>
-        public ScrollController(CollectionView collectionView)
+        /// <param name="aiCollectionView">Collection view.</param>
+        public ScrollController(AiCollectionView aiCollectionView)
         {
-            _refView = new WeakReference<CollectionView>(collectionView);
+            _refView = new WeakReference<AiCollectionView>(aiCollectionView);
         }
 
         /// <summary>

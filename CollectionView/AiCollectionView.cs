@@ -7,13 +7,13 @@ namespace AiForms.Renderers
     /// <summary>
     /// Collection view.
     /// </summary>
-    public class CollectionView : ListView
+    public class AiCollectionView : ListView
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.CollectionView"/> class.
         /// </summary>
         /// <param name="cachingStrategy">Caching strategy.</param>
-        public CollectionView(ListViewCachingStrategy cachingStrategy):base(cachingStrategy){
+        public AiCollectionView(ListViewCachingStrategy cachingStrategy):base(cachingStrategy){
             ScrollController = new ScrollController(this);
             SetLoadMoreCompletion = (isEnd) =>
             {
@@ -24,7 +24,7 @@ namespace AiForms.Renderers
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.CollectionView"/> class.
         /// </summary>
-        public CollectionView():this(ListViewCachingStrategy.RecycleElement){}
+        public AiCollectionView():this(ListViewCachingStrategy.RecycleElement){}
 
         /// <summary>
         /// The item tap command property.
@@ -33,7 +33,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ItemTapCommand),
                 typeof(ICommand),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(ICommand),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -54,7 +54,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ItemLongTapCommand),
                 typeof(ICommand),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(ICommand),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -75,7 +75,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(TouchFeedbackColor),
                 typeof(Color),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(Color),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -96,7 +96,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(GroupFirstSpacing),
                 typeof(double),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -118,7 +118,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(GroupLastSpacing),
                 typeof(double),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -140,7 +140,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ScrollController),
                 typeof(IScrollController),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(IScrollController),
                 defaultBindingMode: BindingMode.OneWayToSource
             );
@@ -159,7 +159,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(LoadMoreCommand),
                 typeof(ICommand),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(ICommand),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -176,7 +176,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(SetLoadMoreCompletion),
                 typeof(Action<bool>),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(Action),
                 defaultBindingMode: BindingMode.OneWayToSource
             );
@@ -191,7 +191,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(LoadMoreMargin),
                 typeof(int),
-                typeof(CollectionView),
+                typeof(AiCollectionView),
                 default(int),
                 defaultBindingMode: BindingMode.OneWay
             );

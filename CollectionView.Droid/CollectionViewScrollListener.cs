@@ -8,19 +8,19 @@ namespace AiForms.Renderers.Droid
     {
         public bool IsReachedBottom { get; set; }
 
-        CollectionView _collectionView;
+        AiCollectionView _aiCollectionView;
 
 
-        public CollectionViewScrollListener(CollectionView collectionView)
+        public CollectionViewScrollListener(AiCollectionView aiCollectionView)
         {
-            _collectionView = collectionView;
+            _aiCollectionView = aiCollectionView;
         }
 
         protected override void Dispose(bool disposing)
         {
             if(disposing)
             {
-                _collectionView = null;
+                _aiCollectionView = null;
             }
             base.Dispose(disposing);
         }
@@ -29,7 +29,7 @@ namespace AiForms.Renderers.Droid
         {
             base.OnScrolled(recyclerView, dx, dy);
 
-            if(dx < 0 || dy < 0 || IsReachedBottom || _collectionView.LoadMoreCommand == null)
+            if(dx < 0 || dy < 0 || IsReachedBottom || _aiCollectionView.LoadMoreCommand == null)
             {
                 return;
             }
@@ -40,10 +40,10 @@ namespace AiForms.Renderers.Droid
             var totalItemCount = layoutManager.ItemCount;
             var firstVisibleItem = layoutManager.FindFirstVisibleItemPosition();
 
-            if(totalItemCount - visibleItemCount - _collectionView.LoadMoreMargin <= firstVisibleItem)
+            if(totalItemCount - visibleItemCount - _aiCollectionView.LoadMoreMargin <= firstVisibleItem)
             {
                 IsReachedBottom = true;
-                _collectionView.LoadMoreCommand?.Execute(null);
+                _aiCollectionView.LoadMoreCommand?.Execute(null);
             }
         }
     }

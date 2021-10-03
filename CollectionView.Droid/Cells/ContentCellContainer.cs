@@ -23,7 +23,7 @@ namespace AiForms.Renderers.Droid.Cells
 
         IVisualElementRenderer _contentViewRenderer;
         ContentCell _contentCell;
-        CollectionView CellParent => ContentCell.Parent as CollectionView;
+        AiCollectionView CellParent => ContentCell.Parent as AiCollectionView;
         ICellController _CellController => ContentCell;
 
         public ContentCellContainer(Context context) : base(context)
@@ -112,7 +112,7 @@ namespace AiForms.Renderers.Droid.Cells
             {
                 return;
             }
-            if (e.PropertyName == CollectionView.TouchFeedbackColorProperty.PropertyName)
+            if (e.PropertyName == AiCollectionView.TouchFeedbackColorProperty.PropertyName)
             {
                 UpdateTouchFeedbackColor();
             }

@@ -22,7 +22,7 @@ namespace AiForms.Renderers.iOS.Cells
         ContentCell _contentCell;
         UIView _selectedForegroundView;
         Element INativeElementView.Element => ContentCell;
-        CollectionView CellParent => _contentCell.Parent as CollectionView;
+        AiCollectionView CellParent => _contentCell.Parent as AiCollectionView;
         bool _disposed;
 
         public ContentCell ContentCell
@@ -135,7 +135,7 @@ namespace AiForms.Renderers.iOS.Cells
 
         public virtual void ParentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == CollectionView.TouchFeedbackColorProperty.PropertyName)
+            if (e.PropertyName == AiCollectionView.TouchFeedbackColorProperty.PropertyName)
             {
                 UpdateTouchFeedbackColor();
             }

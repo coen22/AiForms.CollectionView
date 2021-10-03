@@ -24,7 +24,7 @@ namespace AiForms.Renderers.Droid
 
         protected int _listCount = -1; // -1 we need to get count from the list
         protected Dictionary<int, List<int>> _sectionCache = new Dictionary<int, List<int>>();
-        protected CollectionView _collectionView;
+        protected AiCollectionView AiCollectionView;
 
         int _dataTemplateIncrementer = 2;  // DataTemplate count is limited until 2-999
         int _headerTemplateIncrementer = 1001; // more than or equal to 1000 is group header.
@@ -35,17 +35,17 @@ namespace AiForms.Renderers.Droid
         List<CollectionViewHolder> _viewHolders = new List<CollectionViewHolder>();
         Dictionary<DataTemplate, int> _templateToId = new Dictionary<DataTemplate, int>();
 
-        IListViewController Controller => _collectionView;
-        ITemplatedItemsView<Cell> TemplatedItemsView => _collectionView;
+        IListViewController Controller => AiCollectionView;
+        ITemplatedItemsView<Cell> TemplatedItemsView => AiCollectionView;
 
-        public CollectionViewAdapter(Context context, CollectionView collectionView, RecyclerView recyclerView, ICollectionViewRenderer renderer)
+        public CollectionViewAdapter(Context context, AiCollectionView aiCollectionView, RecyclerView recyclerView, ICollectionViewRenderer renderer)
         {
             _context = context;
-            _collectionView = collectionView;
+            AiCollectionView = aiCollectionView;
             _recyclerView = recyclerView;
             _collectionViewRenderer = renderer;
 
-            var templatedItems = ((ITemplatedItemsView<Cell>)collectionView).TemplatedItems;
+            var templatedItems = ((ITemplatedItemsView<Cell>)aiCollectionView).TemplatedItems;
             templatedItems.CollectionChanged += OnCollectionChanged;
             templatedItems.GroupedCollectionChanged += OnGroupedCollectionChanged;
         }
@@ -60,7 +60,7 @@ namespace AiForms.Renderers.Droid
 
                 _context = null;
                 _recyclerView = null;
-                _collectionView = null;
+                AiCollectionView = null;
                 _collectionViewRenderer = null;
                 _templateToId = null;
                 _sectionCache = null;
@@ -89,14 +89,14 @@ namespace AiForms.Renderers.Droid
             var position = GetRealPosition(_recyclerView.GetChildAdapterPosition(v));
             int group = 0;
             int row = position;
-            if (_collectionView.IsGroupingEnabled)
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 group = TemplatedItemsView.TemplatedItems.GetGroupIndexFromGlobal(position, out row);
             }
 
-            if (_collectionView.ItemTapCommand != null && _collectionView.ItemTapCommand.CanExecute(formsCell.BindingContext))
+            if (AiCollectionView.ItemTapCommand != null && AiCollectionView.ItemTapCommand.CanExecute(formsCell.BindingContext))
             {
-                _collectionView.ItemTapCommand.Execute(formsCell.BindingContext);
+                AiCollectionView.ItemTapCommand.Execute(formsCell.BindingContext);
             }
 
             Controller.NotifyRowTapped(group, row - 1, formsCell);
@@ -112,13 +112,13 @@ namespace AiForms.Renderers.Droid
                 return true;
             }
 
-            if (_collectionView.ItemLongTapCommand == null)
+            if (AiCollectionView.ItemLongTapCommand == null)
             {
                 return false;
             }
-            if (_collectionView.ItemLongTapCommand != null && _collectionView.ItemLongTapCommand.CanExecute(formsCell.BindingContext))
+            if (AiCollectionView.ItemLongTapCommand != null && AiCollectionView.ItemLongTapCommand.CanExecute(formsCell.BindingContext))
             {
-                _collectionView.ItemLongTapCommand.Execute(formsCell.BindingContext);
+                AiCollectionView.ItemLongTapCommand.Execute(formsCell.BindingContext);
             }
             return true;
         }
@@ -142,7 +142,7 @@ namespace AiForms.Renderers.Droid
         {
             var exArgs = e as NotifyCollectionChangedEventArgsEx;
 
-            var groupReset = (resetWhenGrouped && _collectionView.IsGroupingEnabled) || forceReset;
+            var groupReset = (resetWhenGrouped && AiCollectionView.IsGroupingEnabled) || forceReset;
 
             var layoutManager = _recyclerView.GetLayoutManager() as LinearLayoutManager;
             var affectedCount = layoutManager.FindLastVisibleItemPosition() - layoutManager.FindFirstVisibleItemPosition();
@@ -235,7 +235,7 @@ namespace AiForms.Renderers.Droid
             var templatedItems = TemplatedItemsView.TemplatedItems;
             int count = 0;
 
-            if (_collectionView.IsGroupingEnabled)
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 for (var i = 0; i < templatedItems.Count; i++)
                 {
@@ -278,21 +278,21 @@ namespace AiForms.Renderers.Droid
             var row = 0;
             bool isHeader = false;
             DataTemplate itemTemplate;
-            if (!_collectionView.IsGroupingEnabled)
-                itemTemplate = _collectionView.ItemTemplate;
+            if (!AiCollectionView.IsGroupingEnabled)
+                itemTemplate = AiCollectionView.ItemTemplate;
             else
             {
                 group = TemplatedItemsView.TemplatedItems.GetGroupIndexFromGlobal(realPosition, out row);
                 if (row == 0)
                 {
                     isHeader = true;
-                    itemTemplate = _collectionView.GroupHeaderTemplate;
+                    itemTemplate = AiCollectionView.GroupHeaderTemplate;
                     if (itemTemplate == null)
                         return DefaultGroupHeaderTemplateId;
                 }
                 else
                 {
-                    itemTemplate = _collectionView.ItemTemplate;
+                    itemTemplate = AiCollectionView.ItemTemplate;
                     row--;
                 }
             }
@@ -304,7 +304,7 @@ namespace AiForms.Renderers.Droid
             {
                 object item = null;
 
-                if (_collectionView.IsGroupingEnabled)
+                if (AiCollectionView.IsGroupingEnabled)
                 {
                     if (TemplatedItemsView.TemplatedItems.GetGroup(group).ListProxy.Count > 0)
                         item = TemplatedItemsView.TemplatedItems.GetGroup(group).ListProxy[row];
@@ -315,7 +315,7 @@ namespace AiForms.Renderers.Droid
                         item = TemplatedItemsView.TemplatedItems.ListProxy[realPosition];
                 }
 
-                itemTemplate = selector.SelectTemplate(item, _collectionView);
+                itemTemplate = selector.SelectTemplate(item, AiCollectionView);
             }
 
             // check again to guard against DataTemplateSelectors that return null
@@ -389,7 +389,7 @@ namespace AiForms.Renderers.Droid
                 // We are going to re-set the Platform here because in some cases (headers mostly) its possible this is unset and
                 // when the binding context gets updated the measure passes will all fail. By applying this here the Update call
                 // further down will result in correct layouts.
-                cell.Platform = _collectionView.Platform;
+                cell.Platform = AiCollectionView.Platform;
 
                 ICellController cellController = cell;
                 cellController.SendDisappearing();
@@ -397,14 +397,14 @@ namespace AiForms.Renderers.Droid
                 int row = realPosition;
                 var group = 0;
                 var templatedItems = TemplatedItemsView.TemplatedItems;
-                if (_collectionView.IsGroupingEnabled)
+                if (AiCollectionView.IsGroupingEnabled)
                 {
                     group = templatedItems.GetGroupIndexFromGlobal(realPosition, out row);
                     if (group < 0) return;
                 }
                 var templatedList = templatedItems.GetGroup(group);
 
-                if (_collectionView.IsGroupingEnabled)
+                if (AiCollectionView.IsGroupingEnabled)
                 {
                     if (row == 0)
                         templatedList.UpdateHeader(cell, group);
@@ -426,7 +426,7 @@ namespace AiForms.Renderers.Droid
 
             if (cell == null) return;
 
-            AView view = GetCell(cell, container, _recyclerView, _context, _collectionView);
+            AView view = GetCell(cell, container, _recyclerView, _context, AiCollectionView);
 
 
             Performance.Start(reference, "AddView");
@@ -471,7 +471,7 @@ namespace AiForms.Renderers.Droid
             var templatedItems = TemplatedItemsView.TemplatedItems;
             var templatedItemsCount = templatedItems.Count;
 
-            if (!_collectionView.IsGroupingEnabled)
+            if (!AiCollectionView.IsGroupingEnabled)
             {
                 return templatedItems[position];
             }
@@ -485,7 +485,7 @@ namespace AiForms.Renderers.Droid
                 if (global == position)
                 {
                     //Always create a new cell if we are using the RecycleElement strategy
-                    var recycleElement = (_collectionView.CachingStrategy & ListViewCachingStrategy.RecycleElement) != 0;
+                    var recycleElement = (AiCollectionView.CachingStrategy & ListViewCachingStrategy.RecycleElement) != 0;
                     var headerCell = recycleElement ? GetNewGroupHeaderCell(group) : group.HeaderContent;
                     return headerCell;
                 }
@@ -514,7 +514,7 @@ namespace AiForms.Renderers.Droid
 
         protected virtual Cell GetNewGroupHeaderCell(ITemplatedItemsList<Cell> group)
         {
-            var groupHeaderCell = _collectionView.TemplatedItems.GroupHeaderTemplate?.CreateContent(group.ItemsSource, _collectionView) as Cell;
+            var groupHeaderCell = AiCollectionView.TemplatedItems.GroupHeaderTemplate?.CreateContent(group.ItemsSource, AiCollectionView) as Cell;
 
             if (groupHeaderCell != null)
             {
@@ -527,7 +527,7 @@ namespace AiForms.Renderers.Droid
                 groupHeaderCell.BindingContext = group;
             }
 
-            groupHeaderCell.Parent = _collectionView;
+            groupHeaderCell.Parent = AiCollectionView;
             groupHeaderCell.SetIsGroupHeader<ItemsView<Cell>, Cell>(true);
             return groupHeaderCell;
         }

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(HCollectionView), typeof(HCollectionViewRenderer))]
+[assembly: ExportRenderer(typeof(HAiCollectionView), typeof(HCollectionViewRenderer))]
 namespace AiForms.Renderers.iOS
 {
     [Foundation.Preserve(AllMembers = true)]
@@ -18,11 +18,11 @@ namespace AiForms.Renderers.iOS
         UICollectionView _collectionView;
         CGRect _previousFrame = CGRect.Empty;
         bool _disposed;
-        HCollectionView _hCollectionView => Element as HCollectionView;
-        float _firstSpacing => (float)_hCollectionView.GroupFirstSpacing;
-        float _lastSpacing => (float)_hCollectionView.GroupLastSpacing;
+        HAiCollectionView HAiCollectionView => Element as HAiCollectionView;
+        float _firstSpacing => (float)HAiCollectionView.GroupFirstSpacing;
+        float _lastSpacing => (float)HAiCollectionView.GroupLastSpacing;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             if (e.NewElement != null)
             {
@@ -86,25 +86,25 @@ namespace AiForms.Renderers.iOS
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName == HCollectionView.ColumnWidthProperty.PropertyName ||
+            if (e.PropertyName == HAiCollectionView.ColumnWidthProperty.PropertyName ||
                e.PropertyName == VisualElement.HeightRequestProperty.PropertyName)
             {
                 UpdateCellSize();
                 ViewLayout.InvalidateLayout();
             }
-            else if (e.PropertyName == HCollectionView.GroupHeaderWidthProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.GroupHeaderWidthProperty.PropertyName)
             {
                 UpdateGroupHeaderWidth();
                 ViewLayout.InvalidateLayout();
             }
-            else if (e.PropertyName == HCollectionView.SpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupFirstSpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupLastSpacingProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.SpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupFirstSpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupLastSpacingProperty.PropertyName)
             {
                 UpdateSpacing();
                 ViewLayout.InvalidateLayout();
             }
-            else if (e.PropertyName == HCollectionView.IsInfiniteProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.IsInfiniteProperty.PropertyName)
             {
                 _collectionView.ReloadData();
                 ViewLayout.InvalidateLayout();
@@ -129,7 +129,7 @@ namespace AiForms.Renderers.iOS
 
         protected override void OnGroupedCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 // If infinite, any events are dealt with as a reset event.
                 UpdateItems(e, 0, true);
@@ -141,7 +141,7 @@ namespace AiForms.Renderers.iOS
 
         protected override void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 UpdateItems(e, 0, true, true);
                 return;
@@ -157,15 +157,15 @@ namespace AiForms.Renderers.iOS
             }
 
             var height = Element.HeightRequest >= 0 ? Element.HeightRequest : Bounds.Height;
-            DataSource.CellSize = new CGSize((float)_hCollectionView.ColumnWidth, (float)height);
+            DataSource.CellSize = new CGSize((float)HAiCollectionView.ColumnWidth, (float)height);
             DataSource.LoadMoreMargin = Element.LoadMoreMargin * (float)DataSource.CellSize.Width;
         }
 
         protected virtual void UpdateSpacing()
         {
-            ViewLayout.MinimumLineSpacing = (System.nfloat)_hCollectionView.Spacing;
+            ViewLayout.MinimumLineSpacing = (System.nfloat)HAiCollectionView.Spacing;
 
-            if(_hCollectionView.IsInfinite && !_hCollectionView.IsGroupingEnabled)
+            if(HAiCollectionView.IsInfinite && !HAiCollectionView.IsGroupingEnabled)
             {
                 return;
             }
@@ -175,9 +175,9 @@ namespace AiForms.Renderers.iOS
 
         protected virtual void UpdateGroupHeaderWidth()
         {
-            if (_hCollectionView.IsGroupingEnabled)
+            if (HAiCollectionView.IsGroupingEnabled)
             {
-                ViewLayout.HeaderReferenceSize = new CGSize(_hCollectionView.GroupHeaderWidth, Bounds.Height);
+                ViewLayout.HeaderReferenceSize = new CGSize(HAiCollectionView.GroupHeaderWidth, Bounds.Height);
             }
         }
 

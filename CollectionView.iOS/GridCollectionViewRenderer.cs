@@ -14,7 +14,7 @@ using CoreFoundation;
 using System.Collections.Specialized;
 using Xamarin.Forms.Internals;
 
-[assembly: ExportRenderer(typeof(GridCollectionView), typeof(GridCollectionViewRenderer))]
+[assembly: ExportRenderer(typeof(GridAiCollectionView), typeof(GridCollectionViewRenderer))]
 namespace AiForms.Renderers.iOS
 {
     [Foundation.Preserve(AllMembers = true)]
@@ -25,13 +25,13 @@ namespace AiForms.Renderers.iOS
         KeyboardInsetTracker _insetTracker;
         RectangleF _previousFrame;
         bool _disposed;
-        GridCollectionView _gridCollectionView => (GridCollectionView)Element;
+        GridAiCollectionView GridAiCollectionView => (GridAiCollectionView)Element;
         GridCollectionViewSource _gridSource => DataSource as GridCollectionViewSource;
-        float _firstSpacing => (float)_gridCollectionView.GroupFirstSpacing;
-        float _lastSpacing => (float)_gridCollectionView.GroupLastSpacing;
-        bool _isRatioHeight => _gridCollectionView.ColumnHeight <= 5.0;
+        float _firstSpacing => (float)GridAiCollectionView.GroupFirstSpacing;
+        float _lastSpacing => (float)GridAiCollectionView.GroupLastSpacing;
+        bool _isRatioHeight => GridAiCollectionView.ColumnHeight <= 5.0;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             if (e.NewElement != null)
             {
@@ -124,33 +124,33 @@ namespace AiForms.Renderers.iOS
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == GridCollectionView.GroupHeaderHeightProperty.PropertyName)
+            if (e.PropertyName == GridAiCollectionView.GroupHeaderHeightProperty.PropertyName)
             {
                 UpdateGroupHeaderHeight();
                 ViewLayout.InvalidateLayout();
             }
-            else if (e.PropertyName == GridCollectionView.GridTypeProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.PortraitColumnsProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.LandscapeColumnsProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.ColumnSpacingProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.ColumnHeightProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.SpacingTypeProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.AdditionalHeightProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupFirstSpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupLastSpacingProperty.PropertyName ||
-                     e.PropertyName == GridCollectionView.BothSidesMarginProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.GridTypeProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.PortraitColumnsProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.LandscapeColumnsProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.ColumnSpacingProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.ColumnHeightProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.SpacingTypeProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.AdditionalHeightProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupFirstSpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupLastSpacingProperty.PropertyName ||
+                     e.PropertyName == GridAiCollectionView.BothSidesMarginProperty.PropertyName)
             {
                 UpdateGridType();
                 InvalidateLayout();
             }
-            else if (e.PropertyName == GridCollectionView.RowSpacingProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.RowSpacingProperty.PropertyName)
             {
                 UpdateRowSpacing();
                 ViewLayout.InvalidateLayout();
             }
-            else if (e.PropertyName == GridCollectionView.ColumnWidthProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.ColumnWidthProperty.PropertyName)
             {
-                if (_gridCollectionView.GridType != GridType.UniformGrid)
+                if (GridAiCollectionView.GridType != GridType.UniformGrid)
                 {
                     UpdateGridType();
                     InvalidateLayout();
@@ -160,7 +160,7 @@ namespace AiForms.Renderers.iOS
             {
                 UpdatePullToRefreshEnabled();
             }
-            else if (e.PropertyName == GridCollectionView.PullToRefreshColorProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.PullToRefreshColorProperty.PropertyName)
             {
                 UpdatePullToRefreshColor();
             }
@@ -168,7 +168,7 @@ namespace AiForms.Renderers.iOS
             {
                 UpdateIsRefreshing();
             }
-            else if (e.PropertyName == GridCollectionView.IsGroupHeaderStickyProperty.PropertyName)
+            else if (e.PropertyName == GridAiCollectionView.IsGroupHeaderStickyProperty.PropertyName)
             {
                 UpdateIsSticky();
                 InvalidateLayout();
@@ -195,15 +195,15 @@ namespace AiForms.Renderers.iOS
         {
             if (_refreshControl.Refreshing)
             {
-                _gridCollectionView.SendRefreshing();
+                GridAiCollectionView.SendRefreshing();
             }
-            _gridCollectionView.IsRefreshing = _refreshControl.Refreshing;
+            GridAiCollectionView.IsRefreshing = _refreshControl.Refreshing;
         }
 
         protected virtual void UpdateIsRefreshing()
         {
             var refreshing = Element.IsRefreshing;
-            if (_gridCollectionView == null)
+            if (GridAiCollectionView == null)
             {
                 return;
             }
@@ -223,9 +223,9 @@ namespace AiForms.Renderers.iOS
 
         protected virtual void UpdatePullToRefreshColor()
         {
-            if (!_gridCollectionView.PullToRefreshColor.IsDefault)
+            if (!GridAiCollectionView.PullToRefreshColor.IsDefault)
             {
-                _refreshControl.TintColor = _gridCollectionView.PullToRefreshColor.ToUIColor();
+                _refreshControl.TintColor = GridAiCollectionView.PullToRefreshColor.ToUIColor();
             }
         }
 
@@ -244,20 +244,20 @@ namespace AiForms.Renderers.iOS
 
         protected virtual void UpdateRowSpacing()
         {
-            ViewLayout.MinimumLineSpacing = (System.nfloat)_gridCollectionView.RowSpacing;
+            ViewLayout.MinimumLineSpacing = (System.nfloat)GridAiCollectionView.RowSpacing;
         }
 
         protected virtual void UpdateGroupHeaderHeight()
         {
-            if (_gridCollectionView.IsGroupingEnabled)
+            if (GridAiCollectionView.IsGroupingEnabled)
             {
-                ViewLayout.HeaderReferenceSize = new CGSize(Bounds.Width, _gridCollectionView.GroupHeaderHeight);
+                ViewLayout.HeaderReferenceSize = new CGSize(Bounds.Width, GridAiCollectionView.GroupHeaderHeight);
             }
         }
 
         protected virtual void UpdateIsSticky()
         {
-            ViewLayout.SectionHeadersPinToVisibleBounds = _gridCollectionView.IsGroupHeaderSticky;
+            ViewLayout.SectionHeadersPinToVisibleBounds = GridAiCollectionView.IsGroupHeaderSticky;
         }
 
         protected virtual void UpdateGridType()
@@ -267,31 +267,31 @@ namespace AiForms.Renderers.iOS
             ViewLayout.MinimumInteritemSpacing = 0;
             CGSize itemSize = CGSize.Empty;
 
-            if (_gridCollectionView.GridType == GridType.UniformGrid)
+            if (GridAiCollectionView.GridType == GridType.UniformGrid)
             {
                 switch (UIApplication.SharedApplication.StatusBarOrientation)
                 {
                     case UIInterfaceOrientation.Portrait:
                     case UIInterfaceOrientation.PortraitUpsideDown:
                     case UIInterfaceOrientation.Unknown:
-                        itemSize = GetUniformItemSize(_gridCollectionView.PortraitColumns);
-                        DataSource.LoadMoreMargin = Element.LoadMoreMargin / _gridCollectionView.PortraitColumns * (float)itemSize.Height;
+                        itemSize = GetUniformItemSize(GridAiCollectionView.PortraitColumns);
+                        DataSource.LoadMoreMargin = Element.LoadMoreMargin / GridAiCollectionView.PortraitColumns * (float)itemSize.Height;
                         break;
                     case UIInterfaceOrientation.LandscapeLeft:
                     case UIInterfaceOrientation.LandscapeRight:
-                        itemSize = GetUniformItemSize(_gridCollectionView.LandscapeColumns);
-                        DataSource.LoadMoreMargin = Element.LoadMoreMargin / _gridCollectionView.LandscapeColumns * (float)itemSize.Height;
+                        itemSize = GetUniformItemSize(GridAiCollectionView.LandscapeColumns);
+                        DataSource.LoadMoreMargin = Element.LoadMoreMargin / GridAiCollectionView.LandscapeColumns * (float)itemSize.Height;
                         break;
                 }
-                ViewLayout.MinimumInteritemSpacing = (System.nfloat)_gridCollectionView.ColumnSpacing;
+                ViewLayout.MinimumInteritemSpacing = (System.nfloat)GridAiCollectionView.ColumnSpacing;
             }
             else
             {
                 itemSize = GetAutoSpacingItemSize();
             }
 
-            _gridCollectionView.SetValue(GridCollectionView.ComputedWidthProperty, itemSize.Width);
-            _gridCollectionView.SetValue(GridCollectionView.ComputedHeightProperty, itemSize.Height);
+            GridAiCollectionView.SetValue(GridAiCollectionView.ComputedWidthProperty, itemSize.Width);
+            GridAiCollectionView.SetValue(GridAiCollectionView.ComputedHeightProperty, itemSize.Height);
 
             DataSource.CellSize = itemSize;
             ViewLayout.EstimatedItemSize = itemSize;
@@ -301,18 +301,18 @@ namespace AiForms.Renderers.iOS
         {
             if (_isRatioHeight)
             {
-                return itemWidth * _gridCollectionView.ColumnHeight + _gridCollectionView.AdditionalHeight;
+                return itemWidth * GridAiCollectionView.ColumnHeight + GridAiCollectionView.AdditionalHeight;
             }
 
-            return _gridCollectionView.ColumnHeight + _gridCollectionView.AdditionalHeight;
+            return GridAiCollectionView.ColumnHeight + GridAiCollectionView.AdditionalHeight;
         }
 
         protected virtual CGSize GetUniformItemSize(int columns)
         {
-            var margin = (float)_gridCollectionView.BothSidesMargin;
+            var margin = (float)GridAiCollectionView.BothSidesMargin;
             ViewLayout.SectionInset = new UIEdgeInsets(_firstSpacing,margin, _lastSpacing, margin);
 
-            float width = (float)Frame.Width - margin * 2f - (float)_gridCollectionView.ColumnSpacing * (float)(columns - 1.0f);
+            float width = (float)Frame.Width - margin * 2f - (float)GridAiCollectionView.ColumnSpacing * (float)(columns - 1.0f);
 
             _gridSource.SurplusPixel = (int)width % columns;
 
@@ -324,9 +324,9 @@ namespace AiForms.Renderers.iOS
 
         protected virtual CGSize GetAutoSpacingItemSize()
         {
-            var itemWidth = (float)Math.Min(Frame.Width, _gridCollectionView.ColumnWidth);
+            var itemWidth = (float)Math.Min(Frame.Width, GridAiCollectionView.ColumnWidth);
             var itemHeight = CalcurateColumnHeight(itemWidth);
-            if (_gridCollectionView.SpacingType == SpacingType.Between)
+            if (GridAiCollectionView.SpacingType == SpacingType.Between)
             {
                 DataSource.LoadMoreMargin = Element.LoadMoreMargin / ((float)Frame.Width / itemWidth) * (float)itemHeight;
                 return new CGSize(itemWidth, itemHeight);
@@ -334,7 +334,7 @@ namespace AiForms.Renderers.iOS
 
 
             var leftSize = (float)Frame.Width;
-            var spacing = (float)_gridCollectionView.ColumnSpacing;
+            var spacing = (float)GridAiCollectionView.ColumnSpacing;
             int columnCount = 0;
             do
             {
@@ -366,7 +366,7 @@ namespace AiForms.Renderers.iOS
 
         void InvalidateLayout()
         {
-            if (!_gridCollectionView.IsGroupingEnabled)
+            if (!GridAiCollectionView.IsGroupingEnabled)
             {
                 ViewLayout.InvalidateLayout();
                 return;

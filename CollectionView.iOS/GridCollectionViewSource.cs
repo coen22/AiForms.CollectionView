@@ -10,16 +10,16 @@ namespace AiForms.Renderers.iOS
     {
         public int SurplusPixel { get; set; } = 0;
         public List<int> AdjustCellSizeList { get; set; } = new List<int>();
-        GridCollectionView _gridCollectionView => CollectionView as GridCollectionView;
+        GridAiCollectionView GridAiCollectionView => AiCollectionView as GridAiCollectionView;
 
-        public GridCollectionViewSource(CollectionView collectionView, UICollectionView uiCollectionView)
-            :base(collectionView,uiCollectionView)
+        public GridCollectionViewSource(AiCollectionView aiCollectionView, UICollectionView uiCollectionView)
+            :base(aiCollectionView,uiCollectionView)
         {
         }
 
         public override CGSize GetSizeForItem(UICollectionView collectionView, UICollectionViewLayout layout, NSIndexPath indexPath)
         {
-            if(_gridCollectionView.GridType != GridType.UniformGrid){
+            if(GridAiCollectionView.GridType != GridType.UniformGrid){
                 return base.GetSizeForItem(collectionView, layout, indexPath);
             }
 
@@ -30,12 +30,12 @@ namespace AiForms.Renderers.iOS
                 case UIInterfaceOrientation.Portrait:
                 case UIInterfaceOrientation.PortraitUpsideDown:
                 case UIInterfaceOrientation.Unknown:
-                    totalColumns = _gridCollectionView.PortraitColumns;
+                    totalColumns = GridAiCollectionView.PortraitColumns;
 
                     break;
                 case UIInterfaceOrientation.LandscapeLeft:
                 case UIInterfaceOrientation.LandscapeRight:
-                    totalColumns = _gridCollectionView.LandscapeColumns;
+                    totalColumns = GridAiCollectionView.LandscapeColumns;
                     break;
             }
 
@@ -54,7 +54,7 @@ namespace AiForms.Renderers.iOS
         {
             base.Scrolled(scrollView);
 
-            if (IsReachedBottom || CollectionView.LoadMoreCommand == null)
+            if (IsReachedBottom || AiCollectionView.LoadMoreCommand == null)
             {
                 return;
             }

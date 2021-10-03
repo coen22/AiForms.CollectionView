@@ -6,13 +6,13 @@ namespace AiForms.Renderers
     /// <summary>
     /// HCollection view.
     /// </summary>
-    public class HCollectionView:CollectionView
+    public class HAiCollectionView:AiCollectionView
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.HCollectionView"/> class.
         /// </summary>
         /// <param name="cachingStrategy">Caching strategy.</param>
-        public HCollectionView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy) 
+        public HAiCollectionView(ListViewCachingStrategy cachingStrategy) : base(cachingStrategy) 
         {
             VerticalOptions = LayoutOptions.Start;
             HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -21,7 +21,7 @@ namespace AiForms.Renderers
         /// <summary>
         /// Initializes a new instance of the <see cref="T:AiForms.Renderers.HCollectionView"/> class.
         /// </summary>
-        public HCollectionView() : this(ListViewCachingStrategy.RecycleElement) {}
+        public HAiCollectionView() : this(ListViewCachingStrategy.RecycleElement) {}
 
         /// <summary>
         /// The column width property.
@@ -30,7 +30,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(ColumnWidth),
                 typeof(double),
-                typeof(HCollectionView),
+                typeof(HAiCollectionView),
                 100d,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -52,7 +52,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(Spacing),
                 typeof(double),
-                typeof(HCollectionView),
+                typeof(HAiCollectionView),
                 default(double),
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -74,7 +74,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(GroupHeaderWidth),
                 typeof(double),
-                typeof(HCollectionView),
+                typeof(HAiCollectionView),
                 100d,
                 defaultBindingMode: BindingMode.OneWay
             );
@@ -96,7 +96,7 @@ namespace AiForms.Renderers
             BindableProperty.Create(
                 nameof(IsInfinite),
                 typeof(bool),
-                typeof(HCollectionView),
+                typeof(HAiCollectionView),
                 default(bool),
                 defaultBindingMode: BindingMode.OneWay
             );

@@ -33,7 +33,7 @@ namespace AiForms.Renderers.iOS.Cells
         protected virtual void SetUpPropertyChanged(ContentCellContainer nativeCell)
         {
             var formsCell = nativeCell.ContentCell as ContentCell;
-            var parentElement = formsCell?.Parent as CollectionView;
+            var parentElement = formsCell?.Parent as AiCollectionView;
 
             formsCell.PropertyChanged += nativeCell.CellPropertyChanged;
 
@@ -46,7 +46,7 @@ namespace AiForms.Renderers.iOS.Cells
         protected virtual void ClearPropertyChanged(ContentCellContainer nativeCell)
         {
             var formsCell = nativeCell.ContentCell as ContentCell;
-            var parentElement = formsCell.Parent as CollectionView;
+            var parentElement = formsCell.Parent as AiCollectionView;
 
             formsCell.PropertyChanged -= nativeCell.CellPropertyChanged;
 

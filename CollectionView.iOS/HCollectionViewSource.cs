@@ -12,22 +12,22 @@ namespace AiForms.Renderers.iOS
     [Foundation.Preserve(AllMembers = true)]
     public class HCollectionViewSource : CollectionViewSource
     {
-        HCollectionView _hCollectionView => CollectionView as HCollectionView;
+        HAiCollectionView HAiCollectionView => AiCollectionView as HAiCollectionView;
         int _infiniteMultiple = 3;
         nfloat _visibleContentWidth = 0f;
 
-        public HCollectionViewSource(CollectionView collectionView, UICollectionView uICollectionView) : base(collectionView, uICollectionView)
+        public HCollectionViewSource(AiCollectionView aiCollectionView, UICollectionView uICollectionView) : base(aiCollectionView, uICollectionView)
         {
         }
 
         public override nint NumberOfSections(UICollectionView collectionView)
         {
-            if (!_hCollectionView.IsInfinite)
+            if (!HAiCollectionView.IsInfinite)
             {
                 return base.NumberOfSections(collectionView);
             }
 
-            if (CollectionView.IsGroupingEnabled)
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 return TemplatedItemsView.TemplatedItems.Count * _infiniteMultiple;
             }
@@ -36,12 +36,12 @@ namespace AiForms.Renderers.iOS
 
         public override nint GetItemsCount(UICollectionView collectionView, nint section)
         {
-            if (!_hCollectionView.IsInfinite)
+            if (!HAiCollectionView.IsInfinite)
             {
                 return base.GetItemsCount(collectionView, section);
             }
 
-            if (!CollectionView.IsGroupingEnabled)
+            if (!AiCollectionView.IsGroupingEnabled)
             {
                 return TemplatedItemsView.TemplatedItems.Count * _infiniteMultiple;
             }
@@ -54,7 +54,7 @@ namespace AiForms.Renderers.iOS
         {
             base.Scrolled(scrollView);
 
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 _visibleContentWidth = scrollView.ContentSize.Width / _infiniteMultiple;
 
@@ -65,7 +65,7 @@ namespace AiForms.Renderers.iOS
                 return;
             }
 
-            if (IsReachedBottom || CollectionView.LoadMoreCommand == null)
+            if (IsReachedBottom || AiCollectionView.LoadMoreCommand == null)
             {
                 return;
             }
@@ -84,7 +84,7 @@ namespace AiForms.Renderers.iOS
 
         protected override NSIndexPath GetRealIndexPath(NSIndexPath indexPath)
         {
-            if (!_hCollectionView.IsInfinite)
+            if (!HAiCollectionView.IsInfinite)
             {
                 return indexPath;
             }
@@ -92,7 +92,7 @@ namespace AiForms.Renderers.iOS
             int sec = 0;
             int row = indexPath.Row;
 
-            if (_hCollectionView.IsGroupingEnabled)
+            if (HAiCollectionView.IsGroupingEnabled)
             {
                 sec = indexPath.Section % TemplatedItemsView.TemplatedItems.Count;
             }

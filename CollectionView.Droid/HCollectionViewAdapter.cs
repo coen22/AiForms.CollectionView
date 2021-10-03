@@ -8,10 +8,10 @@ namespace AiForms.Renderers.Droid
     public class HCollectionViewAdapter : CollectionViewAdapter
     {
         public readonly int InfiniteCount = 50000;
-        HCollectionView _hCollectionView => _collectionView as HCollectionView;
+        HAiCollectionView HAiCollectionView => AiCollectionView as HAiCollectionView;
 
-        public HCollectionViewAdapter(Context context, CollectionView collectionView, RecyclerView recyclerView, ICollectionViewRenderer renderer)
-            : base(context, collectionView, recyclerView, renderer)
+        public HCollectionViewAdapter(Context context, AiCollectionView aiCollectionView, RecyclerView recyclerView, ICollectionViewRenderer renderer)
+            : base(context, aiCollectionView, recyclerView, renderer)
         {
         }
 
@@ -19,7 +19,7 @@ namespace AiForms.Renderers.Droid
         {
             get
             {
-                if (_hCollectionView.IsInfinite)
+                if (HAiCollectionView.IsInfinite)
                 {
                     if (_listCount == -1)
                     {
@@ -33,7 +33,7 @@ namespace AiForms.Renderers.Droid
 
         protected override void OnGroupedCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 UpdateItems(e, 0, true);
                 return;
@@ -43,7 +43,7 @@ namespace AiForms.Renderers.Droid
 
         protected override void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 UpdateItems(e, 0, true, true);
                 return;
@@ -58,7 +58,7 @@ namespace AiForms.Renderers.Droid
             {
                 return position;
             }
-            return _hCollectionView.IsInfinite ? position % _listCount : position;
+            return HAiCollectionView.IsInfinite ? position % _listCount : position;
         }
 
         public virtual int GetInitialPosition()

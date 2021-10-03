@@ -8,14 +8,14 @@ using AndroidX.RecyclerView.Widget;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(HCollectionView), typeof(HCollectionViewRenderer))]
+[assembly: ExportRenderer(typeof(HAiCollectionView), typeof(HCollectionViewRenderer))]
 namespace AiForms.Renderers.Droid
 {
     [Android.Runtime.Preserve(AllMembers = true)]
     public class HCollectionViewRenderer : CollectionViewRenderer, ICollectionViewRenderer
     {
         HSpacingDecoration _itemDecoration;
-        HCollectionView _hCollectionView => Element as HCollectionView;
+        HAiCollectionView HAiCollectionView => Element as HAiCollectionView;
         HCollectionViewAdapter _hAdapter => Adapter as HCollectionViewAdapter;
         int _spacing;
         bool _disposed;
@@ -45,7 +45,7 @@ namespace AiForms.Renderers.Droid
             base.Dispose(disposing);
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<CollectionView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<AiCollectionView> e)
         {
             if (e.NewElement != null)
             {
@@ -82,25 +82,25 @@ namespace AiForms.Renderers.Droid
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == HCollectionView.ColumnWidthProperty.PropertyName ||
+            if (e.PropertyName == HAiCollectionView.ColumnWidthProperty.PropertyName ||
                e.PropertyName == VisualElement.HeightRequestProperty.PropertyName)
             {
                 UpdateCellSize();
                 RefreshAll();
             }
-            else if (e.PropertyName == HCollectionView.GroupHeaderWidthProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.GroupHeaderWidthProperty.PropertyName)
             {
                 UpdateGroupHeaderWidth();
                 RefreshAll();
             }
-            else if (e.PropertyName == HCollectionView.SpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupFirstSpacingProperty.PropertyName ||
-                     e.PropertyName == CollectionView.GroupLastSpacingProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.SpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupFirstSpacingProperty.PropertyName ||
+                     e.PropertyName == AiCollectionView.GroupLastSpacingProperty.PropertyName)
             {
                 UpdateSpacing();
                 RefreshAll();
             }
-            else if (e.PropertyName == HCollectionView.IsInfiniteProperty.PropertyName)
+            else if (e.PropertyName == HAiCollectionView.IsInfiniteProperty.PropertyName)
             {
                 RefreshAll();
                 UpdateIsInfinite();
@@ -131,7 +131,7 @@ namespace AiForms.Renderers.Droid
 
         protected override void ExecuteScroll(int targetPosition, ScrollToRequestedEventArgs eventArgs)
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 int fixPosition = _hAdapter.GetInitialPosition();
                 if (targetPosition == Adapter.ItemCount - 1)
@@ -150,7 +150,7 @@ namespace AiForms.Renderers.Droid
 
         protected virtual void UpdateIsInfinite()
         {
-            if (_hCollectionView.IsInfinite)
+            if (HAiCollectionView.IsInfinite)
             {
                 LayoutManager.ScrollToPositionWithOffset(_hAdapter.GetInitialPosition(), 0);
             }
@@ -163,22 +163,22 @@ namespace AiForms.Renderers.Droid
                 return;
             }
             var height = Element.HeightRequest >= 0 ? Element.HeightRequest : Element.Height;
-            CellWidth = (int)Context.ToPixels(_hCollectionView.ColumnWidth);
+            CellWidth = (int)Context.ToPixels(HAiCollectionView.ColumnWidth);
             CellHeight = (int)Context.ToPixels(height);
         }
 
         protected virtual void UpdateSpacing()
         {
-            _spacing = (int)Context.ToPixels(_hCollectionView.Spacing);
-            _firstSpacing = (int)Context.ToPixels(_hCollectionView.GroupFirstSpacing);
-            _lastSpacing = (int)Context.ToPixels(_hCollectionView.GroupLastSpacing);
+            _spacing = (int)Context.ToPixels(HAiCollectionView.Spacing);
+            _firstSpacing = (int)Context.ToPixels(HAiCollectionView.GroupFirstSpacing);
+            _lastSpacing = (int)Context.ToPixels(HAiCollectionView.GroupLastSpacing);
         }
 
         protected virtual void UpdateGroupHeaderWidth()
         {
-            if (_hCollectionView.IsGroupingEnabled)
+            if (HAiCollectionView.IsGroupingEnabled)
             {
-                GroupHeaderWidth = (int)Context.ToPixels(_hCollectionView.GroupHeaderWidth);
+                GroupHeaderWidth = (int)Context.ToPixels(HAiCollectionView.GroupHeaderWidth);
                 GroupHeaderHeight = (int)Context.ToPixels(Element.Height);
             }
         }
@@ -206,7 +206,7 @@ namespace AiForms.Renderers.Droid
                 var holder = parent.GetChildViewHolder(view) as ContentViewHolder;
                 var position = parent.GetChildAdapterPosition(view);
                 var realPosition = position;
-                if (_renderer._hCollectionView.IsInfinite)
+                if (_renderer.HAiCollectionView.IsInfinite)
                 {
                     realPosition = _renderer.Adapter.GetRealPosition(position);
                 }
@@ -223,7 +223,7 @@ namespace AiForms.Renderers.Droid
                 }
 
                 // Disabled grouping first spacing is applied at the first cell.
-                if (!_renderer._hCollectionView.IsGroupingEnabled && position == 0)                  
+                if (!_renderer.HAiCollectionView.IsGroupingEnabled && position == 0)                  
                 {
                     outRect.Left = _renderer._firstSpacing;            
                 }

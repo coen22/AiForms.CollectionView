@@ -21,8 +21,8 @@ namespace AiForms.Renderers.iOS
         public bool IsReachedBottom { get; set; }
         public float LoadMoreMargin { get; set; }
 
-        protected CollectionView CollectionView;
-        protected ITemplatedItemsView<Cell> TemplatedItemsView => CollectionView;
+        protected AiCollectionView AiCollectionView;
+        protected ITemplatedItemsView<Cell> TemplatedItemsView => AiCollectionView;
 
 
         const int DefaultItemTemplateId = 1;
@@ -32,9 +32,9 @@ namespace AiForms.Renderers.iOS
         UICollectionView _uiCollectionView;
         Dictionary<DataTemplate, int> _templateToId = new Dictionary<DataTemplate, int>();
 
-        public CollectionViewSource(CollectionView collectionView, UICollectionView uiCollectionView)
+        public CollectionViewSource(AiCollectionView aiCollectionView, UICollectionView uiCollectionView)
         {
-            CollectionView = collectionView;
+            AiCollectionView = aiCollectionView;
             _uiCollectionView = uiCollectionView;
             Counts = new Dictionary<int, int>();
             _uiCollectionView.RegisterClassForCell(typeof(ContentCellContainer), DefaultItemTemplateId.ToString());
@@ -50,7 +50,7 @@ namespace AiForms.Renderers.iOS
             {
                 Counts = null;
                 _templateToId = null;
-                CollectionView = null;
+                AiCollectionView = null;
                 _uiCollectionView = null;
 
             }
@@ -67,7 +67,7 @@ namespace AiForms.Renderers.iOS
         protected void RaiseReachedBottom()
         {
             IsReachedBottom = true;
-            CollectionView?.LoadMoreCommand?.Execute(null);
+            AiCollectionView?.LoadMoreCommand?.Execute(null);
         }
 
         public override nint NumberOfSections(UICollectionView collectionView)
@@ -77,7 +77,7 @@ namespace AiForms.Renderers.iOS
                 return 0;
             }
 
-            if (CollectionView.IsGroupingEnabled)
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 return TemplatedItemsView.TemplatedItems.Count;
             }
@@ -94,8 +94,8 @@ namespace AiForms.Renderers.iOS
                 return countOverride;
             }
 
-            var templatedItems = CollectionView.TemplatedItems;
-            if (CollectionView.IsGroupingEnabled)
+            var templatedItems = AiCollectionView.TemplatedItems;
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 var group = (IList)((IList)templatedItems)[(int)section];
                 return group.Count;
@@ -124,7 +124,7 @@ namespace AiForms.Renderers.iOS
         public override bool ShouldShowMenu(UICollectionView collectionView, NSIndexPath indexPath)
         {
             // Detected long tap
-            if (CollectionView.ItemLongTapCommand == null)
+            if (AiCollectionView.ItemLongTapCommand == null)
             {
                 return false;
             }
@@ -133,9 +133,9 @@ namespace AiForms.Renderers.iOS
             var cell = collectionView.CellForItem(indexPath) as ContentCellContainer;
             var formsCell = cell.ContentCell;
 
-            if (CollectionView.ItemLongTapCommand != null && CollectionView.ItemLongTapCommand.CanExecute(formsCell.BindingContext))
+            if (AiCollectionView.ItemLongTapCommand != null && AiCollectionView.ItemLongTapCommand.CanExecute(formsCell.BindingContext))
             {
-                CollectionView.ItemLongTapCommand.Execute(formsCell.BindingContext);
+                AiCollectionView.ItemLongTapCommand.Execute(formsCell.BindingContext);
             }
 
             (cell as ContentCellContainer)?.SelectedAnimation(1.0, 0.5, 0);
@@ -159,20 +159,20 @@ namespace AiForms.Renderers.iOS
 
             var formsCell = cell.ContentCell;
 
-            if (CollectionView.ItemTapCommand != null && CollectionView.ItemTapCommand.CanExecute(formsCell.BindingContext))
+            if (AiCollectionView.ItemTapCommand != null && AiCollectionView.ItemTapCommand.CanExecute(formsCell.BindingContext))
             {
-                CollectionView.ItemTapCommand.Execute(formsCell.BindingContext);
+                AiCollectionView.ItemTapCommand.Execute(formsCell.BindingContext);
             }
 
             var realIndexPath = GetRealIndexPath(indexPath);
-            CollectionView.NotifyRowTapped(realIndexPath.Section, realIndexPath.Row, formsCell);
+            AiCollectionView.NotifyRowTapped(realIndexPath.Section, realIndexPath.Row, formsCell);
 
             collectionView.DeselectItem(indexPath, false);
         }
 
         public override UICollectionReusableView GetViewForSupplementaryElement(UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
         {
-            if (!CollectionView.IsGroupingEnabled)
+            if (!AiCollectionView.IsGroupingEnabled)
                 return null;
 
             if (elementKind == "UICollectionElementKindSectionFooter")
@@ -188,7 +188,7 @@ namespace AiForms.Renderers.iOS
             Performance.Start(out string reference);
 
 
-            var cachingStrategy = CollectionView.CachingStrategy;
+            var cachingStrategy = AiCollectionView.CachingStrategy;
             if (cachingStrategy == ListViewCachingStrategy.RetainElement)
             {
                 nativeCell = GetNativeHeaderCell(realIndexPath);
@@ -236,7 +236,7 @@ namespace AiForms.Renderers.iOS
 
             Performance.Start(out string reference);
 
-            var cachingStrategy = CollectionView.CachingStrategy;
+            var cachingStrategy = AiCollectionView.CachingStrategy;
             if (cachingStrategy == ListViewCachingStrategy.RetainElement)
             {
                 cell = GetCellForPath(realIndexPath);
@@ -337,7 +337,7 @@ namespace AiForms.Renderers.iOS
 
         protected virtual int TemplateIdForPath(NSIndexPath indexPath)
         {
-            var itemTemplate = CollectionView.ItemTemplate;
+            var itemTemplate = AiCollectionView.ItemTemplate;
             var selector = itemTemplate as DataTemplateSelector;
             if (selector == null)
             {
@@ -347,7 +347,7 @@ namespace AiForms.Renderers.iOS
             var templatedList = GetTemplatedItemsListForPath(indexPath);
             var item = templatedList.ListProxy[indexPath.Row];
 
-            itemTemplate = selector.SelectTemplate(item, CollectionView);
+            itemTemplate = selector.SelectTemplate(item, AiCollectionView);
             int key;
             if (!_templateToId.TryGetValue(itemTemplate, out key))
             {
@@ -370,7 +370,7 @@ namespace AiForms.Renderers.iOS
         protected virtual ITemplatedItemsList<Cell> GetTemplatedItemsListForPath(NSIndexPath indexPath)
         {
             var templatedItems = TemplatedItemsView.TemplatedItems;
-            if (CollectionView.IsGroupingEnabled)
+            if (AiCollectionView.IsGroupingEnabled)
             {
                 templatedItems = (ITemplatedItemsList<Cell>)((IList)templatedItems)[indexPath.Section];
             }
