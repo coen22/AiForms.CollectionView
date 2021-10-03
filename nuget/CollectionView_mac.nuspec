@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
-        <id>AiForms.CollectionView</id>
+        <id>Cone.AiForms.CollectionView</id>
         <version>0.2.1-pre</version>
         <title>CollectionView for Xamarin.Forms</title>
-        <authors>kamu</authors>
+        <authors>kamu, coen22</authors>
         <owners>kamu</owners>
         <projectUrl>https://github.com/muak/AiForms.CollectionView</projectUrl>
         <licenseUrl>https://github.com/muak/AiForms.CollectionView/blob/master/LICENSE.txt</licenseUrl>
